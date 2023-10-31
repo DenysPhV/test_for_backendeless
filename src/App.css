@@ -2,6 +2,10 @@
   text-align: center;
 }
 
-.selectedTab {
-  color: brown;
+.active {
+  color: blue;
+}
+
+.active:hover {
+  text-decoration: underline;
 }

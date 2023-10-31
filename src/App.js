@@ -4,7 +4,7 @@ import {
   useLocation,
   Route,
   Routes,
-  BrowserRouter,
+  NavLink,
 } from 'react-router-dom';
 
 import tabData from './tabs.json';
@@ -12,7 +12,10 @@ import tabData from './tabs.json';
 import './App.css';
 
 // define a dynamic import function for components
-const importTabComponent = lazy(path => import(`./tabs/${path}`));
+const LazyTabComponent = ({ path }) => {
+  const TabComponent = lazy(() => import(`./${path}`));
+  return <TabComponent />;
+};
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(null);
@@ -31,37 +34,35 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
-      <div>
-        <nav>
-          <ul>
-            {tabData
-              .sort((a, b) => a.order - b.order)
-              .map(tab => (
-                <li
-                  key={tab.id}
-                  onClick={() => handleTabClick(tab.id)}
-                  className={selectedTab === tab.id ? 'active' : ''}
-                >
+    <div>
+      <nav>
+        <ul>
+          {tabData
+            .sort((a, b) => a.order - b.order)
+            .map(tab => (
+              <li
+                key={tab.id}
+                className={selectedTab === tab.id ? 'active' : ''}
+              >
+                <NavLink to={tab.id} onClick={() => handleTabClick(tab.id)}>
                   {tab.title}
-                </li>
-              ))}
-          </ul>
-        </nav>
-        <Suspense fallback={<div>Loading...</div>}>
+                </NavLink>
+              </li>
+            ))}
+        </ul>
+      </nav>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
           {tabData.map(tab => (
-            <Routes key={tab.id}>
-              <Route
-                path={tab.id}
-                element={React.createElement(importTabComponent(tab.path), {
-                  data: tab,
-                })}
-              />
-            </Routes>
+            <Route
+              key={tab.id}
+              path={tab.id}
+              element={<LazyTabComponent path={tab.path} />}
+            />
           ))}
-        </Suspense>
-      </div>
-    </BrowserRouter>
+        </Routes>
+      </Suspense>
+    </div>
   );
 };
 
