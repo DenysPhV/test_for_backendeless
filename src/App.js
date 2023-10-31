@@ -1,11 +1,32 @@
+import React from 'react';
+import { BrowserRouter, Route, NavLink, Routes } from 'react-router-dom';
+
 import './App.css';
 
-function App() {
+// components
+import Table from './dummyTable';
+
+const App = () => {
   return (
-    <div className="App">
-      <h1>Hello TEST</h1>
-    </div>
+    <BrowserRouter>
+      <nav>
+        <ul>
+          <li>
+            <NavLink to="/dummyTable">Dummy Table</NavLink>
+          </li>
+          <li>
+            <NavLink to="/dummyChart">Dummy Chart</NavLink>
+          </li>
+          <li>
+            <NavLink to="/dummyList">Dummy List</NavLink>
+          </li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route path="*" component={Table} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
