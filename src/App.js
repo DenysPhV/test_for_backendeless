@@ -12,9 +12,7 @@ import tabData from './tabs.json';
 import './App.css';
 
 // define a dynamic import function for components
-const importTabComponent = path => {
-  return lazy(() => import(`./tabs/${path}`));
-};
+const importTabComponent = lazy(path => import(`./tabs/${path}`));
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(null);
