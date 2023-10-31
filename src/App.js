@@ -1,14 +1,19 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
-import { useNavigate, useLocation, Route, Routes } from 'react-router-dom';
+import {
+  useNavigate,
+  useLocation,
+  Route,
+  Routes,
+  BrowserRouter,
+} from 'react-router-dom';
 
 import tabData from './tabs.json';
 
 import './App.css';
 
-// components
-// define a dynamic import function
+// define a dynamic import function for components
 const importTabComponent = path => {
-  return lazy(() => import(`./${path}`));
+  return lazy(() => import(`./tabs/${path}`));
 };
 
 const App = () => {
@@ -28,35 +33,37 @@ const App = () => {
   };
 
   return (
-    <div>
-      <nav>
-        <ul>
-          {tabData
-            .sort((a, b) => a.order - b.order)
-            .map(tab => (
-              <li
-                key={tab.id}
-                onClick={() => handleTabClick(tab.id)}
-                className={selectedTab === tab.id ? 'active' : ''}
-              >
-                {tab.title}
-              </li>
-            ))}
-        </ul>
-      </nav>
-      <Suspense fallback={<div>Loading...</div>}>
-        {tabData.map(tab => (
-          <Routes key={tab.id}>
-            <Route
-              path={tab.id}
-              element={React.createElement(importTabComponent(tab.path), {
-                data: tab,
-              })}
-            />
-          </Routes>
-        ))}
-      </Suspense>
-    </div>
+    <BrowserRouter>
+      <div>
+        <nav>
+          <ul>
+            {tabData
+              .sort((a, b) => a.order - b.order)
+              .map(tab => (
+                <li
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={selectedTab === tab.id ? 'active' : ''}
+                >
+                  {tab.title}
+                </li>
+              ))}
+          </ul>
+        </nav>
+        <Suspense fallback={<div>Loading...</div>}>
+          {tabData.map(tab => (
+            <Routes key={tab.id}>
+              <Route
+                path={tab.id}
+                element={React.createElement(importTabComponent(tab.path), {
+                  data: tab,
+                })}
+              />
+            </Routes>
+          ))}
+        </Suspense>
+      </div>
+    </BrowserRouter>
   );
 };
 
