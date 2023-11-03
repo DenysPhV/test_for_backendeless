@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DummyChart = ({ data }) => (
+const DummyChart = ({ path }) => (
   <div>
     <h2>Dummy Chart</h2>
     <table>
@@ -15,7 +15,7 @@ const DummyChart = ({ data }) => (
           <td>Data 1</td>
           <td>Data 2</td>
         </tr>
-        {data}
+        {path}
       </tbody>
     </table>
   </div>

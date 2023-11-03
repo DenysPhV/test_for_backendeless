@@ -11,6 +11,7 @@ import tabData from './tabs.json';
 
 import './App.css';
 
+// console.log(tabData.path);
 // define a dynamic import function for components
 const LazyTabComponent = ({ path }) => {
   const TabComponent = lazy(() => import(`./${path}`));
@@ -18,7 +19,7 @@ const LazyTabComponent = ({ path }) => {
 };
 
 const App = () => {
-  const [selectedTab, setSelectedTab] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
