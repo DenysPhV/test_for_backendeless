@@ -1,8 +1,8 @@
 import React from 'react';
 
-const DummyTable = ({ data }) => (
+const DummyTable = ({ title, order }) => (
   <div>
-    <h2>Dummy Table</h2>
+    <h2>{title}</h2>
     <table>
       <thead>
         <tr>
@@ -15,7 +15,7 @@ const DummyTable = ({ data }) => (
           <td>Data 1</td>
           <td>Data 2</td>
         </tr>
-        {data}
+        {order}
       </tbody>
     </table>
   </div>

@@ -1,41 +1,12 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
-import {
-  useNavigate,
-  useLocation,
-  Route,
-  Routes,
-  NavLink,
-} from 'react-router-dom';
+import React, { useState, Suspense } from 'react';
+import { Route, Routes, NavLink } from 'react-router-dom';
 
 import tabData from './tabs.json';
 
 import './App.css';
 
-// define a dynamic import function for components
-const LazyTabComponent = ({ path }) => {
-  const TabComponent = lazy(() => import(`./tabs/${path}`));
-  return <TabComponent />;
-};
-
 const App = () => {
-  const [selectedTab, setSelectedTab] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const tabIdFormUrl = location.pathname.replace('/', '');
-
-    if (tabIdFormUrl) {
-      setSelectedTab(tabIdFormUrl);
-    } else {
-      setSelectedTab(tabData[0].id);
-    }
-  }, [location]);
-
-  const handleTabClick = tabId => {
-    setSelectedTab(tabId);
-    navigate(tabId);
-  };
+  const [selectedTab, setSelectedTab] = useState(tabData[0].id);
 
   return (
     <div>
@@ -48,7 +19,7 @@ const App = () => {
                 key={tab.id}
                 className={selectedTab === tab.id ? 'active' : ''}
               >
-                <NavLink to={tab.id} onClick={() => handleTabClick(tab.id)}>
+                <NavLink to={tab.id} onClick={() => setSelectedTab(tab.id)}>
                   {tab.title}
                 </NavLink>
               </li>
@@ -57,17 +28,33 @@ const App = () => {
       </nav>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          {tabData.map(tab => (
-            <Route
-              key={tab.id}
-              path={tab.id}
-              element={<LazyTabComponent path={tab.path} />}
-            />
-          ))}
+          {tabData.map(tab => {
+            const LazyTabComponent = React.lazy(() =>
+              delayForDemo(import(`${tab.path}`)),
+            );
+            return (
+              <Route
+                key={tab.id}
+                path={`/${tab.id}`}
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <LazyTabComponent order={tab.order} title={tab.title} />
+                  </Suspense>
+                }
+              />
+            );
+          })}
         </Routes>
       </Suspense>
     </div>
   );
 };
+
+// Add a fixed delay so you can see the loading state
+function delayForDemo(promise) {
+  return new Promise(resolve => {
+    setTimeout(resolve, 1000);
+  }).then(() => promise);
+}
 
 export default App;
