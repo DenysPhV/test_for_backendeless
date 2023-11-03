@@ -18,10 +18,11 @@ The description of a tab in the JSON file consists of the following:
 tabs.json
 
 ```
-  [ {id: 'dummyTable', title: 'Dummy Table',
-  order: 1, path: 'tabs/dummyTable.js'}, {id: 'dummyChart', title: 'Dummy
-  Chart', order: 2, path: 'tabs/dummyChart.js'}, {id: 'dummyList', title: 'Dummy
-  List', order: 0, path: 'tabs/dummyList.js'} ];
+[
+  {id: 'dummyTable', title: 'Dummy Table', order: 1, path: 'tabs/dummyTable.js'},
+  {id: 'dummyChart', title: 'Dummy Chart', order: 2, path: 'tabs/dummyChart.js'},
+  {id: 'dummyList', title: 'Dummy List', order: 0, path: 'tabs/dummyList.js'}
+];
 ```
 
 dummyTable.js
