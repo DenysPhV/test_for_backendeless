@@ -11,10 +11,9 @@ import tabData from './tabs.json';
 
 import './App.css';
 
-// console.log(tabData.path);
 // define a dynamic import function for components
 const LazyTabComponent = ({ path }) => {
-  const TabComponent = lazy(() => import(`./${path}`));
+  const TabComponent = lazy(() => import(`./tabs/${path}`));
   return <TabComponent />;
 };
 
@@ -24,9 +23,13 @@ const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Parse the current URL to determine the selected tab
-    const tabId = location.pathname.replace('/', '');
-    setSelectedTab(tabId);
+    const tabIdFormUrl = location.pathname.replace('/', '');
+
+    if (tabIdFormUrl) {
+      setSelectedTab(tabIdFormUrl);
+    } else {
+      setSelectedTab(tabData[0].id);
+    }
   }, [location]);
 
   const handleTabClick = tabId => {
